@@ -11,6 +11,7 @@ Future<dynamic> todoDialog(BuildContext context,
       required TextEditingController controller,
       required void Function()? onPressed}) {
     return showDialog(
+      barrierColor: kTransparent,
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),

@@ -72,14 +72,20 @@ class HomePage extends StatelessWidget {
                                   titleText: "Edit Todo",
                                   controller: _editTodoController,
                                   onPressed: () {
-                                    final todoModel = TodoModel(
-                                      id: state.todoList[index].id,
-                                      todotext: _editTodoController.text,
-                                    );
-                                    BlocProvider.of<TodoBloc>(context).add(
-                                        TodoUpdateEvent(todoModel: todoModel));
-                                    Navigator.pop(context);
-                                    _editTodoController.clear();
+                                    if (_editTodoController.text != null &&
+                                        _editTodoController.text.isNotEmpty) {
+                                      final todoModel = TodoModel(
+                                        id: state.todoList[index].id,
+                                        todotext: _editTodoController.text,
+                                      );
+                                      BlocProvider.of<TodoBloc>(context).add(
+                                          TodoUpdateEvent(
+                                              todoModel: todoModel));
+                                      Navigator.pop(context);
+                                      _editTodoController.clear();
+                                    } else {
+                                      errorSnackBar(context);
+                                    }
                                   },
                                 );
                               },
@@ -182,13 +188,18 @@ class HomePage extends StatelessWidget {
             titleText: "Add Todo",
             controller: _addTodoController,
             onPressed: () {
-              final todoModel = TodoModel(
-                todotext: _addTodoController.text,
-              );
-              BlocProvider.of<TodoBloc>(context)
-                  .add(TodoAddEvent(todoModel: todoModel));
-              Navigator.pop(context);
-              _addTodoController.clear();
+              if (_addTodoController.text != null &&
+                  _addTodoController.text.isNotEmpty) {
+                final todoModel = TodoModel(
+                  todotext: _addTodoController.text,
+                );
+                BlocProvider.of<TodoBloc>(context)
+                    .add(TodoAddEvent(todoModel: todoModel));
+                Navigator.pop(context);
+                _addTodoController.clear();
+              } else {
+                errorSnackBar(context);
+              }
             },
           );
         },
@@ -200,4 +211,17 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+}
+
+errorSnackBar(BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: kBlack,
+      content: TextWidgetCommon(
+        text: "Enter todo",
+        color: kWhite,
+      ),
+    ),
+  );
 }
