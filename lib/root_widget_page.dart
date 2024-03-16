@@ -12,9 +12,10 @@ class RootWidgetPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => TodoBloc(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            scaffoldBackgroundColor: kWhite,
-            appBarTheme: AppBarTheme(backgroundColor: kWhite)),
+            scaffoldBackgroundColor: kBlack,
+            appBarTheme: AppBarTheme(backgroundColor: kBlack)),
         home: HomePage(),
       ),
     );

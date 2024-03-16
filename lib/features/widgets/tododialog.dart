@@ -11,6 +11,7 @@ Future<dynamic> todoDialog(BuildContext context,
       required TextEditingController controller,
       required void Function()? onPressed}) {
     return showDialog(
+      
       barrierColor: kTransparent,
       context: context,
       builder: (context) => AlertDialog(
@@ -29,7 +30,7 @@ Future<dynamic> todoDialog(BuildContext context,
             alignment: Alignment.bottomCenter,
             child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: kBlack,
+                  backgroundColor: tileColor,
                 ),
                 onPressed: onPressed,
                 child: TextWidgetCommon(

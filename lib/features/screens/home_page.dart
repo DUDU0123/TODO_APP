@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo_app/constants/colors.dart';
 import 'package:todo_app/constants/height_width.dart';
+import 'package:todo_app/features/widgets/empty_default_widget.dart';
+import 'package:todo_app/features/widgets/error_snackbar.dart';
+import 'package:todo_app/features/widgets/floating_button.dart';
 import 'package:todo_app/features/widgets/text_widget_common.dart';
 import 'package:todo_app/features/widgets/tododialog.dart';
 import 'package:todo_app/model/todo_model.dart';
@@ -20,20 +23,11 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: TextWidgetCommon(
-            text: "TODO",
-            color: kBlack,
-            fontWeight: FontWeight.w500,
-            fontSize: 25),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.delete_outline_outlined,
-              size: 30,
-              color: kWhite,
-            ),
-          ),
-        ],
+          text: "TODO",
+          color: kWhite,
+          fontWeight: FontWeight.w500,
+          fontSize: 25,
+        ),
       ),
       body: BlocBuilder<TodoBloc, TodoState>(
         builder: (context, state) {
@@ -50,10 +44,10 @@ class HomePage extends StatelessWidget {
                       return ListTile(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
-                        tileColor: const Color.fromARGB(153, 197, 195, 195),
+                        tileColor: tileColor,
                         title: TextWidgetCommon(
                           text: '${state.todoList[index].todotext}',
-                          color: kBlack,
+                          color: kWhite,
                           fontSize: 19,
                           fontWeight: FontWeight.bold,
                           overflow: TextOverflow.ellipsis,
@@ -162,14 +156,7 @@ class HomePage extends StatelessWidget {
                       );
                     },
                   )
-                : Center(
-                    child: TextWidgetCommon(
-                      text: "No Todo Available",
-                      color: kBlack,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  );
+                : const EmptyDefaultWidget();
           } else if (state is TodoErrorState) {
             return Center(
               child: TextWidgetCommon(text: state.error, color: kBlack),
@@ -178,50 +165,8 @@ class HomePage extends StatelessWidget {
           return const SizedBox();
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: kBlack,
-        onPressed: () async {
-          await todoDialog(
-            context,
-            hintText: "Enter Todo..",
-            buttonText: "Save",
-            titleText: "Add Todo",
-            controller: _addTodoController,
-            onPressed: () {
-              if (_addTodoController.text != null &&
-                  _addTodoController.text.isNotEmpty) {
-                final todoModel = TodoModel(
-                  todotext: _addTodoController.text,
-                );
-                BlocProvider.of<TodoBloc>(context)
-                    .add(TodoAddEvent(todoModel: todoModel));
-                Navigator.pop(context);
-                _addTodoController.clear();
-              } else {
-                errorSnackBar(context);
-              }
-            },
-          );
-        },
-        child: Icon(
-          Icons.add,
-          size: 30,
-          color: kWhite,
-        ),
-      ),
+      floatingActionButton:
+          FloatingButtonWidget(addTodoController: _addTodoController),
     );
   }
-}
-
-errorSnackBar(BuildContext context) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      behavior: SnackBarBehavior.floating,
-      backgroundColor: kBlack,
-      content: TextWidgetCommon(
-        text: "Enter todo",
-        color: kWhite,
-      ),
-    ),
-  );
 }

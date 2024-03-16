@@ -15,4 +15,5 @@ Color kOrange = Colors.orange;
 Color kPurple = Colors.purple;
 Color kTransparent = Colors.transparent;
 Color kBlackOpacity = Colors.black.withOpacity(0.45);
+Color tileColor =  Color.fromARGB(255, 76, 84, 78);
 Color kSearchBarGreyBlack = const Color.fromARGB(255, 47, 46, 46);
